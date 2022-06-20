@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
      Copyright (C) 2020 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,6 +19,19 @@
     <!-- Permissions for accessing VehiclePropertyIds.CURRENT_GEAR. -->
     <uses-permission android:name="android.car.permission.CAR_POWERTRAIN" />
 
+    <!-- Permissions for accessing VehiclePropertyIds.PERF_VEHICLE_SPEED. -->
+    <uses-permission android:name="android.car.permission.CAR_SPEED" />
+
+    <!-- Permissions for accessing VehiclePropertyIds.IGNITION_STATE. -->
+    <!-- Permissions for accessing VehiclePropertyIds.PARKING_BRAKE. -->
+    <uses-permission android:name="android.car.permission.CAR_POWERTRAIN" />
+
+    <!-- Permissions for accessing VehiclePropertyIds.FUEL_LEVEL_LOW. -->
+    <uses-permission android:name="android.car.permission.CAR_ENERGY" />
+
+    <!-- Permissions for accessing VehiclePropertyIds.NIGHT_MODE. -->
+    <uses-permission android:name="android.car.permission.CAR_EXTERIOR_ENVIRONMENT" />
+
     <!-- Uses Theme.DeviceDefault to use the car's default theme. -->
     <application
         android:allowBackup="true"
@@ -29,6 +41,9 @@
         android:supportsRtl="true"
         android:theme="@android:style/Theme.DeviceDefault.NoActionBar">
         <activity android:name="com.example.cargearviewer.MainActivity">
+            <meta-data
+                android:name="distractionOptimized"
+                android:value="true" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

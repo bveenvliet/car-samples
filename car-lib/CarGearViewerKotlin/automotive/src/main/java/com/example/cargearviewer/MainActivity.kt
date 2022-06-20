@@ -20,6 +20,7 @@ import android.car.Car
 import android.car.VehiclePropertyIds
 import android.car.hardware.CarPropertyValue
 import android.car.hardware.property.CarPropertyManager
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
@@ -34,19 +35,31 @@ class MainActivity : Activity() {
     companion object {
         private const val TAG = "MainActivity"
 
-        private const val GEAR_UNKNOWN = "GEAR_UNKNOWN"
+        private const val UNKNOWN = "unknown"
 
         // Values are taken from android.car.hardware.CarSensorEvent class.
         private val VEHICLE_GEARS = mapOf(
-            0x0000 to GEAR_UNKNOWN,
+            0x0000 to UNKNOWN,
             0x0001 to "GEAR_NEUTRAL",
             0x0002 to "GEAR_REVERSE",
             0x0004 to "GEAR_PARK",
             0x0008 to "GEAR_DRIVE"
         )
+
+        private val IGNITION_STATES = mapOf(
+            0 to UNKNOWN,
+            1 to "LOCK",
+            2 to "OFF",
+            3 to "ACC",
+            4 to "On",
+            5 to "Start"
+        )
     }
 
     private lateinit var currentGearTextView: TextView
+    private lateinit var ignitionStateTextView: TextView
+    private lateinit var parkingBrakeTextView: TextView
+    private lateinit var nightModeTextView: TextView
 
     /** Car API. */
     private lateinit var car: Car
@@ -63,7 +76,18 @@ class MainActivity : Activity() {
         override fun onChangeEvent(value: CarPropertyValue<Any>) {
             Log.d(TAG, "Received on changed car property event")
             // value.value type changes depending on the vehicle property.
-            currentGearTextView.text = VEHICLE_GEARS.getOrDefault(value.value as Int, GEAR_UNKNOWN)
+            when (value.propertyId) {
+                VehiclePropertyIds.GEAR_SELECTION -> currentGearTextView.text =
+                    VEHICLE_GEARS.getOrDefault(value.value as Int, UNKNOWN)
+                VehiclePropertyIds.IGNITION_STATE -> ignitionStateTextView.text =
+                    IGNITION_STATES.getOrDefault(value.value as Int, UNKNOWN)
+                VehiclePropertyIds.PARKING_BRAKE_ON -> parkingBrakeTextView.text =
+                    value.value.toString()
+                VehiclePropertyIds.NIGHT_MODE -> nightModeTextView.text =
+                    value.value.toString()
+                else ->
+                    Log.w(TAG, "unknown id: $value")
+            }
         }
 
         override fun onErrorEvent(propId: Int, zone: Int) {
@@ -76,6 +100,9 @@ class MainActivity : Activity() {
         setContentView(R.layout.activity_main)
 
         currentGearTextView = findViewById(R.id.currentGearTextView)
+        ignitionStateTextView = findViewById(R.id.ignitionStateTextView)
+        parkingBrakeTextView = findViewById(R.id.parkingBrakeTextView)
+        nightModeTextView = findViewById(R.id.nightModeTextView)
 
         // createCar() returns a "Car" object to access car service APIs. It can return null if
         // car service is not yet ready but that is not a common case and can happen on rare cases
@@ -87,12 +114,35 @@ class MainActivity : Activity() {
 
         carPropertyManager = car.getCarManager(Car.PROPERTY_SERVICE) as CarPropertyManager;
 
-        // Subscribes to the gear change events.
-        carPropertyManager.registerCallback(
-            carPropertyListener,
-            VehiclePropertyIds.CURRENT_GEAR,
-            CarPropertyManager.SENSOR_RATE_ONCHANGE
+        val signalsToMonitor = arrayListOf(
+            VehiclePropertyIds.GEAR_SELECTION,
+            VehiclePropertyIds.IGNITION_STATE,
+            VehiclePropertyIds.PARKING_BRAKE_ON,
+            VehiclePropertyIds.NIGHT_MODE
         )
+
+        signalsToMonitor.forEach {
+            carPropertyManager.registerCallback(
+                carPropertyListener,
+                it,
+                CarPropertyManager.SENSOR_RATE_ONCHANGE
+            )
+        }
+    }
+
+    private val permissions =
+        arrayOf(Car.PERMISSION_ENERGY, Car.PERMISSION_SPEED, Car.PERMISSION_POWERTRAIN)
+
+    override fun onResume() {
+        super.onResume()
+        when (PackageManager.PERMISSION_GRANTED) {
+            checkSelfPermission(permissions[0]) -> {}
+            checkSelfPermission(permissions[1]) -> {}
+            checkSelfPermission(permissions[2]) -> {}
+            else -> {
+                requestPermissions(permissions, 0)
+            }
+        }
     }
 
     override fun onDestroy() {
