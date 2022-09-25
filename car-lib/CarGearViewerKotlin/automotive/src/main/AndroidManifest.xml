@@ -16,12 +16,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.cargearviewer">
 
-    <!-- Permissions for accessing VehiclePropertyIds.CURRENT_GEAR. -->
-    <uses-permission android:name="android.car.permission.CAR_POWERTRAIN" />
-
     <!-- Permissions for accessing VehiclePropertyIds.PERF_VEHICLE_SPEED. -->
     <uses-permission android:name="android.car.permission.CAR_SPEED" />
 
+    <!-- Permissions for accessing VehiclePropertyIds.CURRENT_GEAR. -->
     <!-- Permissions for accessing VehiclePropertyIds.IGNITION_STATE. -->
     <!-- Permissions for accessing VehiclePropertyIds.PARKING_BRAKE. -->
     <uses-permission android:name="android.car.permission.CAR_POWERTRAIN" />
@@ -40,7 +38,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@android:style/Theme.DeviceDefault.NoActionBar">
-        <activity android:name="com.example.cargearviewer.MainActivity">
+        <activity
+            android:name="com.example.cargearviewer.MainActivity"
+            android:exported="true">
             <meta-data
                 android:name="distractionOptimized"
                 android:value="true" />
