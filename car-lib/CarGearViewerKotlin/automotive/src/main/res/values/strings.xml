@@ -17,6 +17,7 @@
     <string name="app_name">CarGearViewer</string>
 
     <!-- MainActivity -->
+    <string name="main_current_speed">Current Speed (m/s):</string>
     <string name="main_current_gear">Current Gear:</string>
     <string name="main_ignition_state">Ignition State:</string>
     <string name="main_parking_brake">Parking Brake:</string>

@@ -56,6 +56,7 @@ class MainActivity : Activity() {
         )
     }
 
+    private lateinit var currentSpeedTextView: TextView
     private lateinit var currentGearTextView: TextView
     private lateinit var ignitionStateTextView: TextView
     private lateinit var parkingBrakeTextView: TextView
@@ -78,6 +79,8 @@ class MainActivity : Activity() {
             Log.d(TAG, "Received on changed car property event")
             // value.value type changes depending on the vehicle property.
             when (value.propertyId) {
+                VehiclePropertyIds.PERF_VEHICLE_SPEED -> currentSpeedTextView.text =
+                    value.value.toString()
                 VehiclePropertyIds.GEAR_SELECTION -> currentGearTextView.text =
                     VEHICLE_GEARS.getOrDefault(value.value as Int, UNKNOWN)
                 VehiclePropertyIds.IGNITION_STATE -> ignitionStateTextView.text =
@@ -104,6 +107,7 @@ class MainActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        currentSpeedTextView = findViewById(R.id.currentSpeedTextView)
         currentGearTextView = findViewById(R.id.currentGearTextView)
         ignitionStateTextView = findViewById(R.id.ignitionStateTextView)
         parkingBrakeTextView = findViewById(R.id.parkingBrakeTextView)
@@ -121,6 +125,7 @@ class MainActivity : Activity() {
         carPropertyManager = car.getCarManager(Car.PROPERTY_SERVICE) as CarPropertyManager
 
         val signalsToMonitor = arrayListOf(
+            VehiclePropertyIds.PERF_VEHICLE_SPEED,
             VehiclePropertyIds.GEAR_SELECTION,
             VehiclePropertyIds.IGNITION_STATE,
             VehiclePropertyIds.PARKING_BRAKE_ON,
