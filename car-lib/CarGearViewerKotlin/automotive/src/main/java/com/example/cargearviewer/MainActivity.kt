@@ -137,19 +137,9 @@ class MainActivity : Activity() {
         }
     }
 
-    private val permissions =
-        arrayOf(Car.PERMISSION_ENERGY, Car.PERMISSION_SPEED, Car.PERMISSION_POWERTRAIN)
-
     override fun onResume() {
         super.onResume()
-        when (PackageManager.PERMISSION_GRANTED) {
-            checkSelfPermission(permissions[0]) -> {}
-            checkSelfPermission(permissions[1]) -> {}
-            checkSelfPermission(permissions[2]) -> {}
-            else -> {
-                requestPermissions(permissions, 0)
-            }
-        }
+        checkAndRequestCarPermissions()
     }
 
     override fun onDestroy() {
@@ -157,4 +147,23 @@ class MainActivity : Activity() {
 
         car.disconnect()
     }
+
+    private fun checkAndRequestCarPermissions() {
+        // check all required permissions
+        val requiredPermissions =
+            arrayOf(
+                Car.PERMISSION_ENERGY,
+                Car.PERMISSION_SPEED,
+                Car.PERMISSION_POWERTRAIN
+            )
+
+        var requestPermission = false
+        requiredPermissions.forEach {
+            if (checkSelfPermission(it) != PackageManager.PERMISSION_GRANTED)
+                requestPermission = true
+        }
+        if (requestPermission)
+            requestPermissions(requiredPermissions, 0)
+    }
+
 }
