@@ -60,6 +60,7 @@ class MainActivity : Activity() {
     private lateinit var ignitionStateTextView: TextView
     private lateinit var parkingBrakeTextView: TextView
     private lateinit var nightModeTextView: TextView
+    private lateinit var fuelLevelLowTextView: TextView
 
     /** Car API. */
     private lateinit var car: Car
@@ -85,8 +86,12 @@ class MainActivity : Activity() {
                     value.value.toString()
                 VehiclePropertyIds.NIGHT_MODE -> nightModeTextView.text =
                     value.value.toString()
+                VehiclePropertyIds.FUEL_LEVEL -> fuelLevelLowTextView.text =
+                    value.value.toString()
+                VehiclePropertyIds.FUEL_LEVEL_LOW -> fuelLevelLowTextView.text =
+                    value.value.toString()
                 else ->
-                    Log.w(TAG, "unknown id: $value")
+                    Log.e(TAG, "unknown id: $value")
             }
         }
 
@@ -103,6 +108,7 @@ class MainActivity : Activity() {
         ignitionStateTextView = findViewById(R.id.ignitionStateTextView)
         parkingBrakeTextView = findViewById(R.id.parkingBrakeTextView)
         nightModeTextView = findViewById(R.id.nightModeTextView)
+        fuelLevelLowTextView = findViewById(R.id.fuelLevelLowTextView)
 
         // createCar() returns a "Car" object to access car service APIs. It can return null if
         // car service is not yet ready but that is not a common case and can happen on rare cases
@@ -112,13 +118,14 @@ class MainActivity : Activity() {
         // handling car service crashes graciously). Please see the SDK documentation for this.
         car = Car.createCar(this)
 
-        carPropertyManager = car.getCarManager(Car.PROPERTY_SERVICE) as CarPropertyManager;
+        carPropertyManager = car.getCarManager(Car.PROPERTY_SERVICE) as CarPropertyManager
 
         val signalsToMonitor = arrayListOf(
             VehiclePropertyIds.GEAR_SELECTION,
             VehiclePropertyIds.IGNITION_STATE,
             VehiclePropertyIds.PARKING_BRAKE_ON,
-            VehiclePropertyIds.NIGHT_MODE
+            VehiclePropertyIds.NIGHT_MODE,
+            VehiclePropertyIds.FUEL_LEVEL_LOW,
         )
 
         signalsToMonitor.forEach {

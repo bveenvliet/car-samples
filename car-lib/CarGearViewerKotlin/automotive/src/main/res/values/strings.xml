@@ -21,4 +21,5 @@
     <string name="main_ignition_state">Ignition State:</string>
     <string name="main_parking_brake">Parking Brake:</string>
     <string name="main_night_mode">Night Mode:</string>
+    <string name="fuel_level_low">Fuel Level Low:</string>
 </resources>

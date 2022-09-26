@@ -24,6 +24,8 @@
     <!-- Permissions for accessing VehiclePropertyIds.PARKING_BRAKE. -->
     <uses-permission android:name="android.car.permission.CAR_POWERTRAIN" />
 
+    <!-- not supported by API 29 Android Automotive Emulator -->
+    <!-- adb shell pm list permisisons | grep CAR_ENERGY -->
     <!-- Permissions for accessing VehiclePropertyIds.FUEL_LEVEL_LOW. -->
     <uses-permission android:name="android.car.permission.CAR_ENERGY" />
 
