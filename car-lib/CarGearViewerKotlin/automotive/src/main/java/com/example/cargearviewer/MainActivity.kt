@@ -64,7 +64,7 @@ class MainActivity : Activity() {
     private lateinit var fuelLevelLowTextView: TextView
 
     /** Car API. */
-    private lateinit var car: Car
+    internal lateinit var car: Car
 
     /**
      * An API to read VHAL (vehicle hardware access layer) properties. List of vehicle properties

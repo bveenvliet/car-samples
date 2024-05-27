@@ -18,12 +18,12 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.cargearviewer"
         minSdk 28
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -45,6 +45,11 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
+    // Testing
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
     // to fix unresolved references to android.car
     def sdkDir = project.android.sdkDirectory.canonicalPath
     def androidCarJar = "$sdkDir/platforms/android-33/optional/android.car.jar"
@@ -54,4 +59,3 @@ dependencies {
 kotlin {
     jvmToolchain(17)
 }
-
