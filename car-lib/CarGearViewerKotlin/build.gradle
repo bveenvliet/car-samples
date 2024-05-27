@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.dsl.jvm.JvmTargetValidationMode
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
+
 /*
  * Copyright (C) 2020 The Android Open Source Project
  *
@@ -17,7 +20,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.7.10'
+    ext.kotlin_version = '1.9.22'
     repositories {
         google()
         mavenCentral()
@@ -35,6 +38,10 @@ allprojects {
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+tasks.register('clean', Delete) {
+    delete rootProject.layout.buildDirectory
+}
+
+tasks.withType(KotlinJvmCompile.class).configureEach {
+    jvmTargetValidationMode = JvmTargetValidationMode.WARNING
 }
