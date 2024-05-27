@@ -13,8 +13,7 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.cargearviewer">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Permissions for accessing VehiclePropertyIds.PERF_VEHICLE_SPEED. -->
     <uses-permission android:name="android.car.permission.CAR_SPEED" />

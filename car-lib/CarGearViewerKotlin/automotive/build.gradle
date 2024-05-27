@@ -36,6 +36,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    namespace 'com.example.cargearviewer'
 
     // android.car exists since Android 10 (API level 29) Revision 5.
 //    useLibrary 'android.car'
